@@ -1,0 +1,151 @@
+asyncapi: '2.3.0'
+info:
+  title: Accounts Async APIs
+  version: '1.0.0'
+  description: |
+    This application is responsible for the Account DB management in Event Driven Architecture. 📈
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  test:
+    url: test.mykafkacluster.org:8092
+    protocol: kafka-secure
+    description: Test broker
+    security:
+      - api_key: []
+
+defaultContentType: application/json
+
+channels:
+  startAccountEmailVerification:
+    description: The topic on which start of email verification event is notified.
+    subscribe:
+      summary: information about verification has been initiated.
+      operationId: startAccountEmailVerification
+      message:
+        $ref: '#/components/messages/startAccountEmailVerification'
+
+  createAccount:
+    publish:
+      operationId: createAccount
+      message:
+        $ref: '#/components/messages/createAccount'
+
+  completeAccountEmailVerification:
+    publish:
+      operationId: completeAccountEmailVerification
+      message:
+        $ref: '#/components/messages/completeAccountEmailVerification'
+
+components:
+  messages:
+    createAccount:
+      name: createAccount
+      title: createAccount
+      summary: createAccount.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/createAccountPayload"
+    startAccountEmailVerification:
+      name: startAccountEmailVerification
+      title: startAccountEmailVerification
+      summary: startAccountEmailVerification.
+      payload:
+        $ref: "#/components/schemas/startAccountEmailVerificationPayload"
+    completeAccountEmailVerification:
+      name: completeAccountEmailVerification
+      title: completeAccountEmailVerification
+      summary: completeAccountEmailVerification.
+      payload:
+        $ref: "#/components/schemas/completeAccountEmailVerificationPayload"
+
+  schemas:
+    completeAccountEmailVerificationPayload:
+      allOf:
+        - $ref: "#/components/schemas/cloudEventBase"
+        - type: object
+          properties:
+            data: 
+              $ref: "#/components/schemas/completeAccountEmailVerification"
+
+    startAccountEmailVerificationPayload:
+      allOf:
+        - $ref: "#/components/schemas/cloudEventBase"
+        - type: object
+          properties:
+            data: 
+              $ref: "#/components/schemas/startAccountEmailVerification"
+
+    createAccountPayload:
+      allOf:
+        - $ref: "#/components/schemas/cloudEventBase"
+        - type: object
+          properties:
+            data: 
+              $ref: "#/components/schemas/accountBase"
+          additionalProperties: false
+
+    cloudEventBase:
+      type: object
+      properties:
+        id: 
+          type: "string"
+          minLength: 1
+        source:
+          "type": "string"
+          "format": "uri-reference"
+          "minLength": 1
+        specversion:
+          type: "string"
+          minLength: 1
+        type:
+          type: "string"
+          minLength: 1
+        datacontenttype:
+          type: 
+            - "string"
+            - "null"
+          minLength: 1
+        subject:
+          type: 
+            - "string"
+            - "null"
+          minLength: 1
+        time:
+          type: 
+            - "string"
+            - "null"
+          minLength: 1
+          "format": "date-time"
+      additionalProperties: false
+    accountBase:
+      type: object
+      properties:
+        name:
+          type: string
+        email: 
+          type: string 
+    completeAccountEmailVerification:
+      allOf: 
+        - $ref: "#/components/schemas/accountBase"
+        - type: object
+          properties: 
+            verified: 
+              type: boolean
+    startAccountEmailVerification: 
+      allOf: 
+        - $ref: "#/components/schemas/accountBase"
+        - type: object
+          properties: 
+            message: 
+              type: string 
+      
+
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: "password"
+      description: schema fo security
+
