@@ -1,0 +1,34 @@
+default:
+  app:
+    name: Accounts Async APIs
+    version: 1.0.0
+
+  broker:
+    kafka:
+      ssl: true
+      sasl: 
+        mechanism: 'plain'
+        username: '<username>'
+        password: '<password>'
+      clientId: accountsAsyncApIs
+      brokers:
+        - test.mykafkacluster.org:8092
+      consumerOptions:
+        groupId: accountsAsyncApIs
+      topics:
+        - createAccount
+        - completeAccountEmailVerification
+      topicSeparator: '__'
+      topicPrefix:
+
+development:
+
+test:
+
+staging:
+
+production:
+  broker:
+    kafka:
+      ssl:
+        rejectUnauthorized: true

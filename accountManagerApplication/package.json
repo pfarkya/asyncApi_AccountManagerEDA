@@ -1,0 +1,20 @@
+{
+  "name": "accounts-async-ap-is",
+  "description": "This application is responsible for the Account DB management in Event Driven Architecture. 📈 ",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node src/api/index.js"
+  },
+  "dependencies": {
+    "asyncapi-validator": "3.0.0",
+    "chalk": "4.1.2",
+    "cloudevents": "^5.3.2",
+    "dotenv": "8.1.0",
+    "hermesjs": "2.x",
+    "hermesjs-kafka": "2.x",
+    "hermesjs-router": "1.x",
+    "mongodb": "^4.4.1",
+    "node-fetch": "2.6.0",
+    "node-yaml-config": "0.0.4"
+  }
+}
